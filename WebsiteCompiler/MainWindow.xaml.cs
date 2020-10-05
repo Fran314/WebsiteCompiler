@@ -438,7 +438,6 @@ namespace WebsiteCompiler
                         while (j + i < inputString.Length && inputString[j + i] != '£')
                             j++;
 
-
                         if (i + j < inputString.Length)
                         {
                             string block_name = inputString.Substring(i + 1, j - 1);
