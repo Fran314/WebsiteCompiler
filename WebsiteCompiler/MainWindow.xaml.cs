@@ -28,7 +28,8 @@ namespace WebsiteCompiler
         private enum SET {
             WINSCP_PATH,
             SOURCE_PATH,
-            OUTPUT_PATH
+            OUTPUT_PATH,
+            SECOND_LANGUAGE
         };
 
         private Dictionary<SET, string> settings = null;
@@ -46,6 +47,7 @@ namespace WebsiteCompiler
             winscpTextBox.Text = settings[SET.WINSCP_PATH];
             sourceTextBox.Text = settings[SET.SOURCE_PATH];
             outputTextBox.Text = settings[SET.OUTPUT_PATH];
+            enCheckBox.IsChecked = s2b(settings[SET.SECOND_LANGUAGE]);
 
             initializeProjectTreeView();
             initializeBlocksListView();
@@ -61,6 +63,7 @@ namespace WebsiteCompiler
             settings.Add(SET.WINSCP_PATH, @"C:\Program Files (x86)\WinSCP\WinSCP.com");
             settings.Add(SET.SOURCE_PATH, Directory.GetCurrentDirectory() + "\\source");
             settings.Add(SET.OUTPUT_PATH, Directory.GetCurrentDirectory() + "\\output");
+            settings.Add(SET.SECOND_LANGUAGE, "FALSE");
         }
         private void readSettings()
         {
@@ -95,37 +98,12 @@ namespace WebsiteCompiler
 
             binaryFile.Close();
         }
-        private void initializeProjectTreeView()
-        {
-            if (settings == null) return;
-
-            projectTreeView.Items.Clear();
-            projectTreeView.Items.Add(newFolderTreeViewItem(settings[SET.SOURCE_PATH]));
-        }
-        private void initializeBlocksListView()
-        {
-            string blocks_folder = Directory.GetCurrentDirectory() + "\\blocks";
-            if(Directory.Exists(blocks_folder))
-            {
-                try
-                {
-                    foreach (string file in Directory.GetFiles(blocks_folder))
-                        blocksListView.Items.Add(newFileListViewItem(file));
-                }
-                catch (Exception) { }
-                
-            }
-            else
-            {
-                Directory.CreateDirectory(blocks_folder);
-            }
-        }
 
         private void winscpButton_Click(object sender, RoutedEventArgs e)
         {
             System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
 
-            if(ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(ofd.FileName))
+            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(ofd.FileName))
             {
                 settings[SET.WINSCP_PATH] = ofd.FileName;
                 winscpTextBox.Text = settings[SET.WINSCP_PATH];
@@ -155,6 +133,37 @@ namespace WebsiteCompiler
                 settings[SET.OUTPUT_PATH] = fbd.SelectedPath;
                 outputTextBox.Text = settings[SET.OUTPUT_PATH];
                 saveSettings();
+            }
+        }
+        private void enCheckBox_Toggled(object sender, RoutedEventArgs e)
+        {
+            settings[SET.SECOND_LANGUAGE] = b2s(enCheckBox.IsChecked == true);
+            saveSettings();
+        }
+
+        private void initializeProjectTreeView()
+        {
+            if (settings == null) return;
+
+            projectTreeView.Items.Clear();
+            projectTreeView.Items.Add(newFolderTreeViewItem(settings[SET.SOURCE_PATH]));
+        }
+        private void initializeBlocksListView()
+        {
+            string blocks_folder = Directory.GetCurrentDirectory() + "\\blocks";
+            if(Directory.Exists(blocks_folder))
+            {
+                try
+                {
+                    foreach (string file in Directory.GetFiles(blocks_folder))
+                        blocksListView.Items.Add(newFileListViewItem(file));
+                }
+                catch (Exception) { }
+                
+            }
+            else
+            {
+                Directory.CreateDirectory(blocks_folder);
             }
         }
 
@@ -421,13 +430,15 @@ namespace WebsiteCompiler
                                 if(File.Exists(Directory.GetCurrentDirectory() + "\\variables\\" + var_name + ".var"))
                                 {
                                     outputString1.Append(File.ReadAllText(Directory.GetCurrentDirectory() + "\\variables\\" + var_name + ".var"));
-                                    outputString2.Append(File.ReadAllText(Directory.GetCurrentDirectory() + "\\variables\\" + var_name + "-en.var"));
+                                    if(enCheckBox.IsChecked == true)
+                                        outputString2.Append(File.ReadAllText(Directory.GetCurrentDirectory() + "\\variables\\" + var_name + "-en.var"));
                                 }
                             }
                             else
                             {
                                 outputString1.Append('$' + var_name + '$');
-                                outputString2.Append('$' + var_name + '$');
+                                if (enCheckBox.IsChecked == true)
+                                    outputString2.Append('$' + var_name + '$');
                             }
                             i += j;
                         }
@@ -444,12 +455,14 @@ namespace WebsiteCompiler
                             if (isAlphanumeric(block_name))
                             {
                                 outputString1.Append(getBlock(block_name, false));
-                                outputString2.Append(getBlock(block_name, true));
+                                if (enCheckBox.IsChecked == true)
+                                    outputString2.Append(getBlock(block_name, true));
                             }
                             else
                             {
                                 outputString1.Append('£' + block_name + '£');
-                                outputString2.Append('£' + block_name + '£');
+                                if (enCheckBox.IsChecked == true)
+                                    outputString2.Append('£' + block_name + '£');
                             }
                             i += j;
                         }
@@ -457,15 +470,18 @@ namespace WebsiteCompiler
                     else
                     {
                         outputString1.Append(inputString[i]);
-                        outputString2.Append(inputString[i]);
+                        if (enCheckBox.IsChecked == true)
+                            outputString2.Append(inputString[i]);
                     }
                 }
 
                 Directory.CreateDirectory(settings[SET.OUTPUT_PATH] + folder_parent);
-                Directory.CreateDirectory(settings[SET.OUTPUT_PATH] + folder_parent + "\\en");
+                if (enCheckBox.IsChecked == true)
+                    Directory.CreateDirectory(settings[SET.OUTPUT_PATH] + folder_parent + "\\en");
 
                 File.WriteAllText(settings[SET.OUTPUT_PATH] + folder_parent + "\\" + file_name, outputString1.ToString());
-                File.WriteAllText(settings[SET.OUTPUT_PATH] + folder_parent + "\\en\\" + file_name, outputString2.ToString());
+                if (enCheckBox.IsChecked == true)
+                    File.WriteAllText(settings[SET.OUTPUT_PATH] + folder_parent + "\\en\\" + file_name, outputString2.ToString());
             }
         }
         private string getBlock(string block_name, bool isEN)
@@ -544,5 +560,16 @@ namespace WebsiteCompiler
             File.Delete(Directory.GetCurrentDirectory() + "\\temp.bat");
         }
 
+        private bool s2b (string arg)
+        {
+            return arg.Equals("TRUE");
+        }
+        private string b2s(bool arg)
+        {
+            if (arg)
+                return "TRUE";
+            else
+                return "FALSE";
+        }
     }
 }

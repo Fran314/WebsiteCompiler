@@ -16,25 +16,27 @@
         </Grid.ColumnDefinitions>
         <GridSplitter Grid.Column="1" Width="2" HorizontalAlignment="Stretch" />
         <GridSplitter Grid.Column="3" Width="2" HorizontalAlignment="Stretch" />
-        <TextBox x:Name="sourceTextBox" Height="23" Margin="64,38,35,0" Text="TextBox" VerticalAlignment="Top" IsReadOnly="True"/>
-        <Label Content="Source:" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="sourceButton" Content="..." Margin="0,41,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20" Click="sourceButton_Click"/>
-        <TextBox x:Name="outputTextBox" Height="23" Margin="64,63,35,0" Text="TextBox" VerticalAlignment="Top" IsReadOnly="True"/>
-        <Label Content="Output:" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="outputButton" Content="..." Margin="0,66,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20" Click="outputButton_Click"/>
+        <TextBox x:Name="sourceTextBox" Height="23" Margin="64,58,35,0" Text="TextBox" VerticalAlignment="Top" IsReadOnly="True"/>
+        <Label Content="Source:" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="sourceButton" Content="..." Margin="0,61,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20" Click="sourceButton_Click"/>
+        <TextBox x:Name="outputTextBox" Height="23" Margin="64,83,35,0" Text="TextBox" VerticalAlignment="Top" IsReadOnly="True"/>
+        <Label Content="Output:" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="outputButton" Content="..." Margin="0,86,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20" Click="outputButton_Click"/>
         <Button x:Name="compileAndUploadButton" Content="Compile &amp; Upload" Grid.Column="4" Margin="0,0,10,10" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="120" Click="compileAndUploadButton_Click"/>
         <Button x:Name="compileButton" Content="Compile" Grid.Column="4" HorizontalAlignment="Right" Margin="0,0,135,10" VerticalAlignment="Bottom" Width="75" Click="compileButton_Click"/>
-        <TreeView x:Name="projectTreeView" Margin="10,91,10,243"/>
+        <TreeView x:Name="projectTreeView" Margin="10,148,10,243"/>
         <TextBox x:Name="fileTextBox" Grid.Column="2" Margin="10" AcceptsReturn="True" MouseDoubleClick="fileTextBox_MouseDoubleClick" AcceptsTab="True" ScrollViewer.HorizontalScrollBarVisibility="Auto"
          ScrollViewer.VerticalScrollBarVisibility="Auto"
          ScrollViewer.CanContentScroll="True"/>
         <ListBox x:Name="blocksListView" Height="228" Margin="10,0,10,10" VerticalAlignment="Bottom" BorderBrush="#FF828790"/>
-        <TextBox x:Name="normalVarContent" Grid.Column="4" Margin="10,31,10,0" TextWrapping="Wrap" VerticalAlignment="Top" SizeChanged="normalVarContent_SizeChanged"/>
-        <TextBox x:Name="enVarContent" Grid.Column="4" Margin="10,54,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock x:Name="varNameTextBlock" Grid.Column="4" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBox x:Name="normalVarContent" Grid.Column="4" Margin="10,43,10,0" TextWrapping="Wrap" VerticalAlignment="Top" SizeChanged="normalVarContent_SizeChanged"/>
+        <TextBox x:Name="enVarContent" Grid.Column="4" Margin="10,68,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock x:Name="varNameTextBlock" Grid.Column="4" HorizontalAlignment="Left" Margin="10,22,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="    "/>
         <Button x:Name="saveButton" Content="Save" Grid.Column="4" HorizontalAlignment="Right" Margin="0,0,215,10" VerticalAlignment="Bottom" Width="75" Click="saveButton_Click"/>
-        <TextBox x:Name="winscpTextBox" Height="23" Margin="64,13,35,0" Text="TextBox" VerticalAlignment="Top" IsReadOnly="True"/>
-        <Label Content="WinSCP:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="winscpButton" Content="..." Margin="0,16,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20" Click="winscpButton_Click"/>
+        <TextBox x:Name="winscpTextBox" Height="23" Margin="64,33,35,0" Text="TextBox" VerticalAlignment="Top" IsReadOnly="True"/>
+        <Label Content="WinSCP:" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="winscpButton" Content="..." Margin="0,36,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20" Click="winscpButton_Click"/>
+        <Button Content="Help" Grid.Column="4" HorizontalAlignment="Left" Margin="215,10,0,0" VerticalAlignment="Top" Width="75"/>
+        <CheckBox x:Name="enCheckBox" Content="2nd Language" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Checked="enCheckBox_Toggled" Unchecked="enCheckBox_Toggled"/>
     </Grid>
 </Window>
